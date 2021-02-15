@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add services
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class=" offset-3 col-md-6">
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Service Name:<input type="text" name="service"  class="form-control" required>
+            Pricing:<input type="number" min="0" name="pricing" id="first" class="form-control" onblur="myFunction()" required>
+            Advance:<input type="number" name="advance" min="0" id="second" class="form-control" onblur="myFunction()" required>
+            Due:<input type="number" name="due" disabled id="ans" class="form-control" onblur="myFunction()" required>
+            Quatation (PDF):<input type="file" name="file" class="form-control" >
+            <input type="submit" value="Add Service" class="btn btn-success">
+            <input type="reset" value="Clean" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+function myFunction() {
+
+	var x = document.getElementById('first').value;
+   var  y = document.getElementById("second").value;
+   var  z =   Number(x) - Number(y);
+    document.getElementById("ans").value = z;
+}
+</script>
+{% endblock %}
