@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Client Service
+{% endblock %}
+
+</style>
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+ <div class="container">
+    <div class="row">
+        <div class="offset-3 col-md-6">
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            Service Name:<input type="text" name="service" value="{{ cli_ser.services }}" class="form-control" required>
+            Pricing:<input type="number" min="0" name="pricing" value="{{ cli_ser.pricing }}" class="form-control" required>
+            Advance:<input type="number" name="advance" class="form-control" value="{{ cli_ser.advance }}" required>
+            Due:<input type="number" name="due" disabled class="form-control" required>
+            Quatation (PDF):<input type="file" name="file" value="{{ cli_ser.quatation.url }}" class="form-control">
+                <input type="submit" value="Edit Service" class="btn btn-success">
+            </form>
+        </div>
+    </div>
+ </div>
+{% endblock %}

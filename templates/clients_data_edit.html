@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Client Data
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+
+
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <form method="post">
+    {% csrf_token %}
+    name:<input type="text" name="client_name" value="{{ client.client_name }}"><br><br>
+    Business:<input type="text" name="client_business" value="{{ client.client_business }}"><br><br>
+    Phone:<input type="tel" name="client_phone" value="{{ client.client_phone }}"><br><br>
+    Email:<input type="email" name="client_email" value="{{ client.client_email }}"><br><br>
+    Address:<input type="text" name="client_address" value="{{ client.client_address }}"><br><br>
+    Country:<input type="text" name="client_country" value="{{ client.client_country }}"><br><br>
+    Work Description:<input type="text" name="client_work_description" value="{{ client.client_work_description }}"><br><br>
+    <input type="submit" value="Modify client">
+
+    </form>
+{% endblock %}

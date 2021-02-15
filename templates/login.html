@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}
+Profile Page
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Clients</a>
+              </li>
+
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Clients Response</a>
+              </li>
+
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+
+
+
+<form method="post" novalidate>
+    {% csrf_token %}
+     {% if forms.non_field_errors %}
+        {% for error in forms.non_field_errors %}
+            {{ error }}
+        {% endfor %}
+    {% endif %}
+    {% for form in forms %}
+        {{ form.label_tag }}{{ form }}{{ form.errors }}<br><br>
+    {% endfor %}
+    <input type="submit">
+</form>
+<a href="{% url 'home' %}">Sign up</a>
+<br><br>
+
+
+{% endblock %}
+

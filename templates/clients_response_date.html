@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Client Response Data
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+
+
+
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <form method="post"></form>
+{% endblock %}

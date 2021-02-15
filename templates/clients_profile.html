@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Client Profile
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <h4 class="text-center alert alert-success">Client profile</h4>
+            <p><b>Name:</b> {{ client.client_name }}<br>
+                <b>Email:</b> {{ client.client_email }}  &nbsp;&nbsp;&nbsp;&nbsp;
+                <b>Phone:</b> {{ client.client_phone }} <br>
+                <b>Address:</b> {{ client.client_address }} <br>
+                <b>Country:</b> {{ client.client_country }} <br>
+                <b>Work:</b> {{ client.client_work_description }}</p>
+            {% if invo %}
+                {% for inv in invo %}
+                    <b>GST:</b> {{ inv.GST }}<br>
+                    <b>PAN:</b> {{ inv.PAN }}<br>
+                    <form method="post" action="{% url 'gst_delete' inv.client_id.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                    </form>
+
+                {% endfor %}
+            {% else %}
+                <a href="{% url 'gst_add' client.id %}" class="btn btn-primary">Add Invoice Details</a>
+            {% endif %}
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+            <form method="post">
+            {% csrf_token %}
+                <label class="label">Client Response:</label>
+                 <textarea name="response" class="form-control" cols="15" rows="3"> </textarea>
+                            </div>
+                    <div class="col-md-6">
+                        <br><br><br><input type="submit" class="btn btn-primary" value="Add Response"></div>
+            </form>
+                </div>
+                <br>
+            </div>
+
+
+
+    <table class="table table-dark">
+    <thead>
+    <tr>
+        <td>Client Name</td>
+        <td>Repo by</td>
+        <td>response</td>
+        <td>date</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% if clirepo %}
+        {% for cli in clirepo %}
+        <tr>
+            <td>{{ cli.client_id.client_name }}</td>
+            <td>{{ cli.superuser_id.username }}</td>
+            <td>{{ cli.client_response }}</td>
+            <td>{{ cli.client_response_date }}</td>
+        </tr>
+        {% endfor %}
+
+    {% endif %}
+    </tbody>
+    </table>
+        </div>
+
+
+    <div class="col-md-6">
+    <br>
+
+    <a href="{% url 'ClientServicesA' client.id %}" class="btn btn-success">Add services</a><br>
+
+        <br>
+    <table class="table table-dark">
+    <thead>
+    <tr>
+        <td>Service Name</td>
+        <td>Pricing</td>
+        <td>Advance</td>
+        <td>Due</td>
+        <td>PDF</td>
+        <td>Action</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% if cli_ser %}
+        {% for cli in cli_ser %}
+        <tr>
+            <td>{{ cli.services }}</td>
+            <td>{{ cli.pricing }}</td>
+            <td>{{ cli.advance }}</td>
+            <td>{{ cli.due }}</td>
+            <td>
+                {% if cli.quatation == 'non' %}
+                    Not Available
+
+                {% else %}
+                <a href="{{ cli.quatation.url }}" download="{{ cli.quatation.url }}">{{ cli.quatation }}</a>
+                {% endif %}
+
+                </td>
+                <td>
+                    <a href="{% url 'ClientServicesE' cli.id %}">Change services</a>
+                    <form method="post" action="{% url 'ClientServicesD' cli.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                    </form>
+                </td>
+        </tr>
+
+        {% endfor %}
+        </tbody>
+            </table>
+        {% if invo %}
+            <center>
+        <form method="post" action="{% url 'invoice' client.id %}" >
+            {% csrf_token %}
+            <input type="submit" value="Generate Invoice" class="btn  btn-danger">
+        </form>
+        </center>
+        {% else %}
+            <h3>for generate invoice first insert client GST details</h3>
+        {% endif %}
+
+
+    {% endif %}
+
+
+    </div>
+</div>
+{% endblock %}

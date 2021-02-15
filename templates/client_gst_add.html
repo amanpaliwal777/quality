@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add services
+{% endblock %}
+
+{% block log %}
+          {% if name == request.user %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'clients_data' %}">Clients</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link disabled">{{ request.user }}</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+          {% else %}
+              <li>
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+              </li>
+          {% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class=" offset-3 col-md-6">
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            GST Name:<input type="text" name="GST"  class="form-control" required>
+            PAN Name:<input type="text" name="PAN"  class="form-control" required>
+            <input type="submit" value="Add Service" class="btn btn-success">
+            <input type="reset" value="Clean" class="btn btn-danger">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
