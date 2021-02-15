@@ -24,7 +24,7 @@ SECRET_KEY = 'd95ejf_*@l35p2m%6mi293^14t30*k!3@+vqz_sp+20john+d9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','crm-app-q.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','crm-app-a.herokuapp.com']
 
 # Application definition
 
